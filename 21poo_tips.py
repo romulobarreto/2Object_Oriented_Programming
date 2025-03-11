@@ -133,3 +133,80 @@ salario_validado = SalarioHelper.validar_salario()
 # ✅ Por que @staticmethod?
 #	•	O método não precisa acessar atributos da classe (cls) nem do objeto (self).
 #	•	Ele só verifica uma informação e retorna um valor válido.
+
+
+###############################Exemplos################################
+
+
+# 📌 Exemplo de CRUD Completo
+
+#Vamos criar um CRUD simples de funcionários!
+
+class Funcionario:
+    funcionarios = []  # Lista para armazenar funcionários
+
+    def __init__(self, nome, cargo, salario):
+        self.nome = nome
+        self.cargo = cargo
+        self.salario = salario
+        Funcionario.funcionarios.append(self)  # Adiciona o novo funcionário à lista
+
+    @classmethod
+    def cadastrar_funcionario(cls):
+        """Solicita dados e cria um novo funcionário (CREATE)."""
+        nome = input("Nome do funcionário: ")
+        cargo = input("Cargo: ")
+        salario = float(input("Salário: "))
+        return cls(nome, cargo, salario)
+
+    def exibir_dados(self):
+        """Mostra os detalhes do funcionário (READ)."""
+        print(f"\n👨🏻‍💻 Nome: {self.nome}\n📌 Cargo: {self.cargo}\n💰 Salário: R${self.salario:.2f}\n")
+
+    def atualizar_dados(self):
+        """Edita os dados do funcionário (UPDATE)."""
+        print(f"Editando dados de {self.nome}...")
+        self.nome = input("Novo nome: ") or self.nome
+        self.cargo = input("Novo cargo: ") or self.cargo
+        novo_salario = input("Novo salário: ")
+        self.salario = float(novo_salario) if novo_salario else self.salario
+        print("✅ Dados atualizados com sucesso!")
+
+    def excluir(self):
+        """Remove o funcionário da lista (DELETE)."""
+        Funcionario.funcionarios.remove(self)
+        print(f"🚨 {self.nome} foi removido do sistema.")
+
+# Testando CRUD
+func1 = Funcionario.cadastrar_funcionario()
+func2 = Funcionario.cadastrar_funcionario()
+
+func1.exibir_dados()
+func2.exibir_dados()
+
+func1.atualizar_dados()
+func1.exibir_dados()
+
+func2.excluir()
+
+'''
+🚀 Explicação
+
+🔹 Criar (CREATE) → @classmethod
+	•	Precisamos criar um novo objeto, então usamos cls.
+
+🔹 Ler (READ) → self
+	•	Apenas mostramos os dados de um objeto específico, então usamos self.
+
+🔹 Atualizar (UPDATE) → self
+	•	Modificamos os atributos de um funcionário específico, então self.
+
+🔹 Deletar (DELETE) → self
+	•	Precisamos remover um objeto específico da lista, então usamos self.
+
+✨ Regra Geral:
+	•	Se o método modifica um único objeto, usamos self.
+	•	Se o método cria um novo objeto, usamos cls.
+	•	Se o método apenas processa dados e não precisa de um objeto, usamos @staticmethod.
+
+'''
